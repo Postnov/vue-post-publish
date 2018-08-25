@@ -7,7 +7,53 @@
 </head>
 <body>
 
-	<main id="app"></main>
+	<main id="app">
+
+
+		<div class="form">
+			<input type="text" class="form__input">
+			<textarea type="text" class="form__input"></textarea>
+			<ul class="form-dropzone">
+				<li class="form-dropzone__item">
+					<img src="" alt="" class="form-dropzone__img">
+				</li>
+			</ul>
+		</div>
+
+
+
+		<ul class="post-list">
+			<li class="post-list__item">
+				<article class="post">
+					<div class="post__buttons post-buttons">
+						<button class="post-buttons__item">Edit</button>
+						<button class="post-buttons__item post-buttons__item--danger">Delete</button>
+					</div>
+
+					<div class="post__img-content">
+						<div class="post__slider post-slider"></div>
+
+						<ul class="post__dropzone post-dropzone">
+							<li class="post-dropzone__item">
+								<img src="" alt="" class="post-dropzone__img">
+							</li>
+						</ul>
+					</div>
+
+					<div class="post__text-content">
+						<p class="post__title">Title</p>
+						<input type="text">
+
+						<p class="post__text">Describe</p>
+						<textarea></textarea>
+					</div>
+
+				</article>
+			</li>
+		</ul>
+
+		<!-- You really want delete this post? You do not be able to return him. -->
+	</main>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 	<script src="script.js"></script>
