@@ -39,7 +39,7 @@
 		
 
 		<ul class="post-list">
-			<post v-for="(item, index) in posts" :key="index" :post="item"></post>
+			<post-item v-for="(item, index) in posts" :key="index" :post="item" :position="index"></post-item>
 		</ul>
 
 		<!-- You really want delete this post? You do not be able to return him. -->

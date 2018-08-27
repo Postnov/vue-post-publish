@@ -8,69 +8,77 @@
 
 });
 
-
-
-Vue.component('post', {
+var PostItem = {
 	data() {
 		return {
 			isEdit: false,
-			photos: []
+			dataPost: []
 		}
 	},
 	props: ['post'],
+	mounted() {
+		console.log(this.$parent.posts)
+	},
+	updated() {
+		console.log('post update');
+	},
+
 	methods: {
 		applyChanges() {
 			this.isEdit = !this.isEdit;
-			this.photos = this.post.photos;
 		},
-        dropzoneEnable() {
-            this.dropzoneIsActive = true;
-        },
-        dropzoneDisable() {
-            this.dropzoneIsActive = false;
-        },
-        dropZoneDrop() {
+		deletePost() {
+			this.$parent.posts = this.$parent.posts.filter((item) => this.post.id !== item.id )
+		},
+		dropzoneEnable() {
+			this.dropzoneIsActive = true;
+		},
+		dropzoneDisable() {
+			this.dropzoneIsActive = false;
+		},
+		dropZoneDrop() {
 			var files = event.target.files || event.dataTransfer.files || [] ;
 
-            files = [... files];
+			files = [... files];
 
-            files.forEach((file, index) => {
+			files.forEach((file, index) => {
 
-                var reader = new FileReader();
+				var reader = new FileReader();
 
-                reader.onload = (e) => {
-                    if (index < 10 && this.post.photos.length < 10) {
-                        this.post.photos.push(e.target.result);
-                    } else {
-                        reader.abort();
-                        return;
-                    }
-                }
+				reader.onload = (e) => {
+					if (index < 10 && this.post.photos.length < 10) {
+						this.post.photos.push(e.target.result);
+					} else {
+						reader.abort();
+						return;
+					}
+				}
 
-                reader.readAsDataURL(file);
-            });
+				reader.readAsDataURL(file);
+			});
 
-            var stringAlert;
+			var stringAlert;
 
-            if (files.length > 10 && this.post.photos.length === 0) {
-                stringAlert = `You can load only 10 files. Right now you load ${files.length}.\nWill be loaded first 10 files`;
-                swal("Error", stringAlert, "error");
-            } else if (this.post.photos.length === 10) {
-                 stringAlert = `Dropzone is crowded and already containts 10 files`;
-                swal("Error", stringAlert, "error");
-            } else if (files.length + this.post.photos.length > 10 && this.post.photos.length !== 10) {
-                 stringAlert = `Dropzone is crowded. Image limit - 10.\nWill be loaded ${10 - this.post.photos.length} files from your drop`;
+			if (files.length > 10 && this.post.photos.length === 0) {
+				stringAlert = `You can load only 10 files. Right now you load ${files.length}.\nWill be loaded first 10 files`;
 				swal("Error", stringAlert, "error");
-            }
-        },        
+			} else if (this.post.photos.length === 10) {
+					stringAlert = `Dropzone is crowded and already containts 10 files`;
+				swal("Error", stringAlert, "error");
+			} else if (files.length + this.post.photos.length > 10 && this.post.photos.length !== 10) {
+					stringAlert = `Dropzone is crowded. Image limit - 10.\nWill be loaded ${10 - this.post.photos.length} files from your drop`;
+				swal("Error", stringAlert, "error");
+			}
+		},        
 	},
 	template: `
+
 			<li class="post-list__item">
 				<article class="post">
 					<div class="post__buttons post-buttons">
 						<button @click="isEdit = !isEdit" v-if="!isEdit" class="post-buttons__item">Edit</button>
 						<button @click="applyChanges" v-if="isEdit" class="post-buttons__item">Apply</button>
-						<button class="post-buttons__item post-buttons__item--danger">Delete</button>
+						<button class="post-buttons__item post-buttons__item--danger" @click="deletePost">Delete</button>
 					</div>
 
 					<div class="post__img-content">
@@ -106,7 +114,8 @@ Vue.component('post', {
 				</article>
 			</li>	
 	`
-})
+}
+
 
 
 
@@ -117,21 +126,23 @@ var vm = new Vue({
 		title: '',
 		text: '',
 		photos: [],
-		posts: []
+		posts: [],
+		postId: 0
 	},
-	mounted() {
-
+	updated() {
+		console.log('app update');
 	},
-	updated() {	
-
+	components: {
+		'post-item': PostItem
 	},
 	methods: {
 		addPost() {
 			this.posts.push({
+				id: this.postId++,
 				title: this.title,
 				text: this.text, 
 				photos: this.photos,
-				dropZoneDrop: this.dropZoneDrop
+				posts: this.posts
 			});
 
 			this.title = '';
@@ -146,9 +157,10 @@ var vm = new Vue({
             this.dropzoneIsActive = false;
         },
         dropZoneDrop() {
-			var files = event.target.files || event.dataTransfer.files || [] ;
+			var files = event.target.files || event.dataTransfer.files || [];
+			
 
-            files = [... files];
+			files = [... files];
 
             files.forEach((file, index) => {
 
