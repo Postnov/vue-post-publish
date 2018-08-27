@@ -9,14 +9,12 @@
 
 	<main id="app" class="app">
 		<h1 class="title">Post publish on vue.js</h1>
-
-
 		<form class="form">
 			<p class="form__title">Post title</p>
-			<input type="text" class="form__field" v-model="title">
+			<input type="text" class="form__field" v-model.lazy="title">
 
 			<p class="form__title">Post text</p>
-			<textarea type="text" class="form__field form__field--textarea" v-model="text"></textarea>
+			<textarea type="text" class="form__field form__field--textarea" v-model.lazy="text"></textarea>
 			<p class="form__title">Images</p>
 			<div class="form-dropzone"
 					v-on="{
@@ -40,7 +38,7 @@
 		
 
 		<ul class="post-list">
-			<post-item v-for="(item, index) in posts" :key="index" :post="item" :position="index"></post-item>
+			<post-item v-for="item in posts" :key="item.id" :post="item"></post-item>
 		</ul>
 
 		<!-- You really want delete this post? You do not be able to return him. -->

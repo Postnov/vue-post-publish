@@ -142,7 +142,7 @@ body {
 
 .form__field--textarea {
 	resize: none;
-	height: 130px;
+	height: 150px;
 	font-family: sans-serif;
 }
 
@@ -168,7 +168,7 @@ body {
 }
 
 .post {
-	padding: 40px 20px;
+	padding: 70px 20px 40px;
 	border-radius: 3px;
 	background-color: #fff;
 	box-shadow: 0 5px 10px 0px rgba(146,146,146, .5);
@@ -178,8 +178,7 @@ body {
 	display: -ms-flex;
 	display: -o-flex;
 	display: flex;
-	-ms-align-items: flex-start;
-	align-items: flex-start;
+	align-items: stretch;
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
@@ -218,7 +217,7 @@ body {
 
 .post__field--textarea {
 	resize: vertical;
-	height: 100px;
+	height: calc(100% - 55px);
 	margin-top: 20px;
 	font-family: sans-serif;
 }

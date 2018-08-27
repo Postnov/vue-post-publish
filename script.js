@@ -12,14 +12,14 @@ var PostItem = {
 	data() {
 		return {
 			isEdit: false,
-			dataPost: []
 		}
 	},
 	props: ['post'],
 	mounted() {
-		console.log(this.$parent.posts)
+		// console.log(this.$parent.posts)
 	},
 	updated() {
+		localStorage.setItem('posts', JSON.stringify(this.$parent.posts));
 		console.log('post update');
 	},
 
@@ -109,10 +109,10 @@ var PostItem = {
 
 					<div class="post__text-content">
 						<p v-if="!isEdit" class="post__title">{{ post.title }}</p>
-						<input v-if="isEdit" class="post__field" type="text" v-model:bind="post.title">
+						<input v-if="isEdit" class="post__field" type="text" v-model.lazy="post.title">
 
 						<p v-if="!isEdit" class="post__text">{{ post.text }}</p>
-						<textarea v-if="isEdit" class="post__field post__field--textarea" v-model:bind="post.text"></textarea>
+						<textarea v-if="isEdit" class="post__field post__field--textarea" v-model.lazy="post.text"></textarea>
 					</div>
 
 				</article>
@@ -130,11 +130,12 @@ var vm = new Vue({
 		title: '',
 		text: '',
 		photos: [],
-		posts: [],
-		postId: 0
-	},
+		posts: JSON.parse(localStorage["posts"] || '[]'),
+		postId: JSON.parse(localStorage["lastPostId"] || 0),
+	},	
 	updated() {
-		console.log('app update');
+		localStorage.setItem('posts', JSON.stringify(this.posts));
+		localStorage.setItem('lastPostId', this.postId);
 	},
 	components: {
 		'post-item': PostItem
@@ -149,7 +150,6 @@ var vm = new Vue({
 				title: this.title,
 				text: this.text, 
 				photos: this.photos,
-				posts: this.posts
 			});
 
 			this.title = '';
