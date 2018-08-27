@@ -30,6 +30,7 @@
 				<ul v-if="photos.length" class="form-dropzone__list">
 					<li v-for="(item, index) in photos" class="form-dropzone__item">
 						<img :src="item" alt="" class="form-dropzone__img">
+						<div class="dropzone__overlay" @click="deleteImage(index)">delete image</div>
 					</li>	
 				</ul>			
 			</div>

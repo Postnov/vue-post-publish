@@ -30,6 +30,9 @@ var PostItem = {
 		deletePost() {
 			this.$parent.posts = this.$parent.posts.filter((item) => this.post.id !== item.id )
 		},
+		deleteImage(index) {
+			this.post.photos = this.post.photos.filter((item, i) => index !== i)
+		},		
 		dropzoneEnable() {
 			this.dropzoneIsActive = true;
 		},
@@ -99,6 +102,7 @@ var PostItem = {
 							
 							<li  v-for="(item, index) in post.photos" :key="index" class="post-dropzone__item">
 								<img :src="item" alt="" class="post-dropzone__img">
+								<div class="dropzone__overlay" @click="deleteImage(index)">delete image</div>
 							</li>							
 						</ul>
 					</div>
@@ -136,6 +140,9 @@ var vm = new Vue({
 		'post-item': PostItem
 	},
 	methods: {
+		deleteImage(index) {
+			this.photos = this.photos.filter((item, i) => index !== i)
+		},
 		addPost() {
 			this.posts.push({
 				id: this.postId++,
