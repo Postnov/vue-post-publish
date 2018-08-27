@@ -12,9 +12,13 @@ var PostItem = {
 	data() {
 		return {
 			isEdit: false,
+			index: null
 		}
 	},
 	props: ['post'],
+	components: {
+		VueGallerySlideshow: VueGallerySlideshow
+	},
 	mounted() {
 		// console.log(this.$parent.posts)
 	},
@@ -86,9 +90,10 @@ var PostItem = {
 
 					<div class="post__img-content">
 						<ul v-if="!isEdit" class="post__images-list">
-							<li v-for="(item, index) in post.photos" :key="index" class="post__images-item">
+							<li v-for="(item, i) in post.photos" :key="i" class="post__images-item" @click="index = i">
 								<img :src="item" alt="" class="post__image">
 							</li>
+							<vue-gallery-slideshow :images="post.photos" :index="index" @close="index = null"></vue-gallery-slideshow>
 						</ul>
 
 						<ul
