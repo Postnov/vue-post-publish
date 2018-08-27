@@ -13,54 +13,42 @@
 
 		<form class="form">
 			<p class="form__title">Post title</p>
-			<input type="text" class="form__field">
+			<input type="text" class="form__field" v-model="title">
 
 			<p class="form__title">Post text</p>
-			<textarea type="text" class="form__field form__field--textarea"></textarea>
-			<ul class="form-dropzone">
-				<li class="form-dropzone__item">
-					<img src="" alt="" class="form-dropzone__img">
-				</li>
-			</ul>
-			<button class="form__button">Create</button>
+			<textarea type="text" class="form__field form__field--textarea" v-model="text"></textarea>
+			<p class="form__title">Images</p>
+			<div class="form-dropzone"
+					v-on="{
+						dragleave: dropzoneDisable,
+						drop: [dropZoneDrop, dropzoneDisable],
+						dragenter: dropzoneEnable,
+						dragover: dropzoneEnable}"
+					v-bind:class="{hightlight: dropzoneIsActive}">
+				<p v-if="!photos.length" class="form-dropzone__text">drop images</p>
+
+				<ul v-if="photos.length" class="form-dropzone__list">
+					<li v-for="(item, index) in photos" class="form-dropzone__item">
+						<img :src="item" alt="" class="form-dropzone__img">
+					</li>	
+				</ul>			
+			</div>
+			<button class="btn" @click.prevent="addPost">Create post</button>
 		</form>
 
-
+		
 
 		<ul class="post-list">
-			<li class="post-list__item">
-				<article class="post">
-					<div class="post__buttons post-buttons">
-						<button class="post-buttons__item">Edit</button>
-						<button class="post-buttons__item post-buttons__item--danger">Delete</button>
-					</div>
-
-					<div class="post__img-content">
-						<div class="post__slider post-slider"></div>
-
-						<ul class="post__dropzone post-dropzone">
-							<li class="post-dropzone__item">
-								<img src="" alt="" class="post-dropzone__img">
-							</li>
-						</ul>
-					</div>
-
-					<div class="post__text-content">
-						<p class="post__title">Title</p>
-						<input type="text">
-
-						<p class="post__text">Далеко-далеко за словесными горами в стране, гласных и согласных живут рыбные тексты. Дороге языком большого переулка запятой! Одна первую снова необходимыми, ручеек.</p>
-						<textarea></textarea>
-					</div>
-
-				</article>
-			</li>
+			<post v-for="(item, index) in posts" :key="index" :post="item"></post>
 		</ul>
 
 		<!-- You really want delete this post? You do not be able to return him. -->
 	</main>
 
+	
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+	<!-- <script src="dpslider.js"></script> -->
 	<script src="script.js"></script>
 </body>
 </html>
