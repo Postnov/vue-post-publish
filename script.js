@@ -11,7 +11,7 @@
 var PostItem = {
 	data() {
 		return {
-			isEdit: false,
+			isEdit: true,
 			index: null
 		}
 	},
@@ -36,14 +36,17 @@ var PostItem = {
 		},
 		deleteImage(index) {
 			this.post.photos = this.post.photos.filter((item, i) => index !== i)
-		},		
+		},
 		dropzoneEnable() {
 			this.dropzoneIsActive = true;
 		},
 		dropzoneDisable() {
 			this.dropzoneIsActive = false;
 		},
-		dropZoneDrop() {
+		dropZoneDrop(numb) {
+			console.log(numb)
+			console.log(event)
+
 			var files = event.target.files || event.dataTransfer.files || [] ;
 
 			files = [... files];
@@ -76,7 +79,7 @@ var PostItem = {
 					stringAlert = `Dropzone is crowded. Image limit - 10.\nWill be loaded ${10 - this.post.photos.length} files from your drop`;
 				swal("Error", stringAlert, "error");
 			}
-		},        
+		},
 	},
 	template: `
 
@@ -100,15 +103,15 @@ var PostItem = {
 							v-if="isEdit"
 							v-on="{
 								dragleave: dropzoneDisable,
-								drop: [dropZoneDrop, dropzoneDisable],
+								drop: dropZoneDrop(32),
 								dragenter: dropzoneEnable,
-								dragover: dropzoneEnable}"							
+								dragover: dropzoneEnable}"
 							class="post__dropzone post-dropzone">
-							
+
 							<li  v-for="(item, index) in post.photos" :key="index" class="post-dropzone__item">
 								<img :src="item" alt="" class="post-dropzone__img">
 								<div class="dropzone__overlay" @click="deleteImage(index)">delete image</div>
-							</li>							
+							</li>
 						</ul>
 					</div>
 
@@ -121,7 +124,7 @@ var PostItem = {
 					</div>
 
 				</article>
-			</li>	
+			</li>
 	`
 }
 
@@ -137,7 +140,7 @@ var vm = new Vue({
 		photos: [],
 		posts: JSON.parse(localStorage["posts"] || '[]'),
 		postId: JSON.parse(localStorage["lastPostId"] || 0),
-	},	
+	},
 	updated() {
 		localStorage.setItem('posts', JSON.stringify(this.posts));
 		localStorage.setItem('lastPostId', this.postId);
@@ -153,14 +156,14 @@ var vm = new Vue({
 			this.posts.push({
 				id: this.postId++,
 				title: this.title,
-				text: this.text, 
+				text: this.text,
 				photos: this.photos,
 			});
 
 			this.title = '';
 			this.text = '';
 			this.photos = [];
-			
+
 		},
         dropzoneEnable() {
             this.dropzoneIsActive = true;
@@ -170,7 +173,7 @@ var vm = new Vue({
         },
         dropZoneDrop() {
 			var files = event.target.files || event.dataTransfer.files || [];
-			
+
 
 			files = [... files];
 
@@ -202,7 +205,7 @@ var vm = new Vue({
                  stringAlert = `Dropzone is crowded. Image limit - 10.\nWill be loaded ${10 - this.photos.length} files from your drop`;
 				swal("Error", stringAlert, "error");
             }
-        },		
+        },
 	}
 
 });
